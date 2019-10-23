@@ -3,10 +3,12 @@
 <mapper namespace="ustc.sse.meitu.mapper.UserMapper">
   <resultMap id="BaseResultMap" type="ustc.sse.meitu.pojo.User">
     <id column="uid" jdbcType="INTEGER" property="uid" />
-    <result column="avator" jdbcType="VARCHAR" property="avator" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="intro" jdbcType="VARCHAR" property="intro" />
-    <result column="location" jdbcType="VARCHAR" property="location" />
+    <result column="uavator" jdbcType="VARCHAR" property="uavator" />
+    <result column="uname" jdbcType="VARCHAR" property="uname" />
+    <result column="uintro" jdbcType="VARCHAR" property="uintro" />
+    <result column="ulocation" jdbcType="VARCHAR" property="ulocation" />
+    <result column="uusername" jdbcType="VARCHAR" property="uusername" />
+    <result column="upassword" jdbcType="VARCHAR" property="upassword" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -38,7 +40,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    uid, avator, name, intro, location
+    uid, uavator, uname, uintro, ulocation, uusername, upassword
   </sql>
   <select id="selectByExample" parameterType="ustc.sse.meitu.pojo.UserExample" resultMap="BaseResultMap">
     select
@@ -66,10 +68,12 @@
     where uid = #{uid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="ustc.sse.meitu.pojo.User">
-    insert into _user (uid, avator, name, 
-      intro, location)
-    values (#{uid,jdbcType=INTEGER}, #{avator,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{intro,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR})
+    insert into _user (uid, uavator, uname, 
+      uintro, ulocation, uusername, 
+      upassword)
+    values (#{uid,jdbcType=INTEGER}, #{uavator,jdbcType=VARCHAR}, #{uname,jdbcType=VARCHAR}, 
+      #{uintro,jdbcType=VARCHAR}, #{ulocation,jdbcType=VARCHAR}, #{uusername,jdbcType=VARCHAR}, 
+      #{upassword,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="ustc.sse.meitu.pojo.User">
     insert into _user
@@ -77,61 +81,81 @@
       <if test="uid != null">
         uid,
       </if>
-      <if test="avator != null">
-        avator,
+      <if test="uavator != null">
+        uavator,
       </if>
-      <if test="name != null">
-        name,
+      <if test="uname != null">
+        uname,
       </if>
-      <if test="intro != null">
-        intro,
+      <if test="uintro != null">
+        uintro,
       </if>
-      <if test="location != null">
-        location,
+      <if test="ulocation != null">
+        ulocation,
+      </if>
+      <if test="uusername != null">
+        uusername,
+      </if>
+      <if test="upassword != null">
+        upassword,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="uid != null">
         #{uid,jdbcType=INTEGER},
       </if>
-      <if test="avator != null">
-        #{avator,jdbcType=VARCHAR},
+      <if test="uavator != null">
+        #{uavator,jdbcType=VARCHAR},
       </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
+      <if test="uname != null">
+        #{uname,jdbcType=VARCHAR},
       </if>
-      <if test="intro != null">
-        #{intro,jdbcType=VARCHAR},
+      <if test="uintro != null">
+        #{uintro,jdbcType=VARCHAR},
       </if>
-      <if test="location != null">
-        #{location,jdbcType=VARCHAR},
+      <if test="ulocation != null">
+        #{ulocation,jdbcType=VARCHAR},
+      </if>
+      <if test="uusername != null">
+        #{uusername,jdbcType=VARCHAR},
+      </if>
+      <if test="upassword != null">
+        #{upassword,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="ustc.sse.meitu.pojo.User">
     update _user
     <set>
-      <if test="avator != null">
-        avator = #{avator,jdbcType=VARCHAR},
+      <if test="uavator != null">
+        uavator = #{uavator,jdbcType=VARCHAR},
       </if>
-      <if test="name != null">
-        name = #{name,jdbcType=VARCHAR},
+      <if test="uname != null">
+        uname = #{uname,jdbcType=VARCHAR},
       </if>
-      <if test="intro != null">
-        intro = #{intro,jdbcType=VARCHAR},
+      <if test="uintro != null">
+        uintro = #{uintro,jdbcType=VARCHAR},
       </if>
-      <if test="location != null">
-        location = #{location,jdbcType=VARCHAR},
+      <if test="ulocation != null">
+        ulocation = #{ulocation,jdbcType=VARCHAR},
+      </if>
+      <if test="uusername != null">
+        uusername = #{uusername,jdbcType=VARCHAR},
+      </if>
+      <if test="upassword != null">
+        upassword = #{upassword,jdbcType=VARCHAR},
       </if>
     </set>
     where uid = #{uid,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="ustc.sse.meitu.pojo.User">
     update _user
-    set avator = #{avator,jdbcType=VARCHAR},
-      name = #{name,jdbcType=VARCHAR},
-      intro = #{intro,jdbcType=VARCHAR},
-      location = #{location,jdbcType=VARCHAR}
+    set uavator = #{uavator,jdbcType=VARCHAR},
+      uname = #{uname,jdbcType=VARCHAR},
+      uintro = #{uintro,jdbcType=VARCHAR},
+      ulocation = #{ulocation,jdbcType=VARCHAR},
+      uusername = #{uusername,jdbcType=VARCHAR},
+      upassword = #{upassword,jdbcType=VARCHAR}
     where uid = #{uid,jdbcType=INTEGER}
   </update>
 </mapper>

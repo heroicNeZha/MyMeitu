@@ -22,8 +22,8 @@ public class PictureServiceImpl implements PictureService {
     @Override
     public List<Picture> list(int uid) {
         PictureExample example = new PictureExample();
-        example.setOrderByClause("id desc");
         example.createCriteria().andUidEqualTo(uid);
+        example.setOrderByClause("uid desc");
 
         List<Picture> list = pictureMapper.selectByExample(example);
         return list;

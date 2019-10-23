@@ -4,8 +4,8 @@
   <resultMap id="BaseResultMap" type="ustc.sse.meitu.pojo.Picture">
     <id column="pid" jdbcType="INTEGER" property="pid" />
     <result column="uid" jdbcType="INTEGER" property="uid" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="desc" jdbcType="VARCHAR" property="desc" />
+    <result column="pname" jdbcType="VARCHAR" property="pname" />
+    <result column="pdesc" jdbcType="VARCHAR" property="pdesc" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -37,7 +37,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    pid, uid, name, desc
+    pid, uid, pname, pdesc
   </sql>
   <select id="selectByExample" parameterType="ustc.sse.meitu.pojo.PictureExample" resultMap="BaseResultMap">
     select
@@ -65,10 +65,10 @@
     where pid = #{pid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="ustc.sse.meitu.pojo.Picture">
-    insert into picture (pid, uid, name, 
-      desc)
-    values (#{pid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{desc,jdbcType=VARCHAR})
+    insert into picture (pid, uid, pname, 
+      pdesc)
+    values (#{pid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{pname,jdbcType=VARCHAR}, 
+      #{pdesc,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="ustc.sse.meitu.pojo.Picture">
     insert into picture
@@ -79,11 +79,11 @@
       <if test="uid != null">
         uid,
       </if>
-      <if test="name != null">
-        name,
+      <if test="pname != null">
+        pname,
       </if>
-      <if test="desc != null">
-        desc,
+      <if test="pdesc != null">
+        pdesc,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -93,11 +93,11 @@
       <if test="uid != null">
         #{uid,jdbcType=INTEGER},
       </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
+      <if test="pname != null">
+        #{pname,jdbcType=VARCHAR},
       </if>
-      <if test="desc != null">
-        #{desc,jdbcType=VARCHAR},
+      <if test="pdesc != null">
+        #{pdesc,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -107,11 +107,11 @@
       <if test="uid != null">
         uid = #{uid,jdbcType=INTEGER},
       </if>
-      <if test="name != null">
-        name = #{name,jdbcType=VARCHAR},
+      <if test="pname != null">
+        pname = #{pname,jdbcType=VARCHAR},
       </if>
-      <if test="desc != null">
-        desc = #{desc,jdbcType=VARCHAR},
+      <if test="pdesc != null">
+        pdesc = #{pdesc,jdbcType=VARCHAR},
       </if>
     </set>
     where pid = #{pid,jdbcType=INTEGER}
@@ -119,8 +119,8 @@
   <update id="updateByPrimaryKey" parameterType="ustc.sse.meitu.pojo.Picture">
     update picture
     set uid = #{uid,jdbcType=INTEGER},
-      name = #{name,jdbcType=VARCHAR},
-      desc = #{desc,jdbcType=VARCHAR}
+      pname = #{pname,jdbcType=VARCHAR},
+      pdesc = #{pdesc,jdbcType=VARCHAR}
     where pid = #{pid,jdbcType=INTEGER}
   </update>
 </mapper>

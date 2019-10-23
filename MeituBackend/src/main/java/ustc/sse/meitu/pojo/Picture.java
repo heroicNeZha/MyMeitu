@@ -5,9 +5,9 @@ public class Picture {
 
     private Integer uid;
 
-    private String name;
+    private String pname;
 
-    private String desc;
+    private String pdesc;
 
     public Integer getPid() {
         return pid;
@@ -25,19 +25,19 @@ public class Picture {
         this.uid = uid;
     }
 
-    public String getName() {
-        return name;
+    public String getPname() {
+        return pname;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setPname(String pname) {
+        this.pname = pname == null ? null : pname.trim();
     }
 
-    public String getDesc() {
-        return desc;
+    public String getPdesc() {
+        return pdesc;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc == null ? null : desc.trim();
+    public void setPdesc(String pdesc) {
+        this.pdesc = pdesc == null ? null : pdesc.trim();
     }
 }

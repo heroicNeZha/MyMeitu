@@ -3,13 +3,17 @@ package ustc.sse.meitu.pojo;
 public class User {
     private Integer uid;
 
-    private String avator;
+    private String uavator;
 
-    private String name;
+    private String uname;
 
-    private String intro;
+    private String uintro;
 
-    private String location;
+    private String ulocation;
+
+    private String uusername;
+
+    private String upassword;
 
     public Integer getUid() {
         return uid;
@@ -19,35 +23,51 @@ public class User {
         this.uid = uid;
     }
 
-    public String getAvator() {
-        return avator;
+    public String getUavator() {
+        return uavator;
     }
 
-    public void setAvator(String avator) {
-        this.avator = avator == null ? null : avator.trim();
+    public void setUavator(String uavator) {
+        this.uavator = uavator == null ? null : uavator.trim();
     }
 
-    public String getName() {
-        return name;
+    public String getUname() {
+        return uname;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setUname(String uname) {
+        this.uname = uname == null ? null : uname.trim();
     }
 
-    public String getIntro() {
-        return intro;
+    public String getUintro() {
+        return uintro;
     }
 
-    public void setIntro(String intro) {
-        this.intro = intro == null ? null : intro.trim();
+    public void setUintro(String uintro) {
+        this.uintro = uintro == null ? null : uintro.trim();
     }
 
-    public String getLocation() {
-        return location;
+    public String getUlocation() {
+        return ulocation;
     }
 
-    public void setLocation(String location) {
-        this.location = location == null ? null : location.trim();
+    public void setUlocation(String ulocation) {
+        this.ulocation = ulocation == null ? null : ulocation.trim();
+    }
+
+    public String getUusername() {
+        return uusername;
+    }
+
+    public void setUusername(String uusername) {
+        this.uusername = uusername == null ? null : uusername.trim();
+    }
+
+    public String getUpassword() {
+        return upassword;
+    }
+
+    public void setUpassword(String upassword) {
+        this.upassword = upassword == null ? null : upassword.trim();
     }
 }

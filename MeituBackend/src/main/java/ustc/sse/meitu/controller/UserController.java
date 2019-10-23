@@ -20,8 +20,15 @@ public class UserController {
 
     @RequestMapping("/add")
     public String add(User user) {
-        if (user != null && user.getName() != null)
+        if (user != null && user.getUname() != null)
             userService.add(user);
         return "home";
+    }
+
+    public String login(User user) {
+        if (user != null && user.getUusername() != null && user.getUpassword() != null) {
+            userService.login(user);
+        }
+        return "";
     }
 }

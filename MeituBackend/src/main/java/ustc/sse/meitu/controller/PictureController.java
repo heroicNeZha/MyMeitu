@@ -16,9 +16,20 @@ public class PictureController {
 
     @RequestMapping("/add")
     public String add(Picture picture) {
-        if (picture != null && picture.getName() != null && picture.getUid() != 0)
+        if (picture != null && picture.getPname() != null && picture.getUid() != 0)
             pictureService.add(picture);
         return "home";
+    }
+
+    @RequestMapping("/all")
+    public String list() {
+        return "all";
+    }
+
+    @RequestMapping("/myPics")
+    public String listByUser(int uid) {
+        pictureService.list(uid);
+        return "myPics" + uid;
     }
 
 }
