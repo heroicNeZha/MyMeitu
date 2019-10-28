@@ -1,27 +1,25 @@
-package ustc.sse.meitu;
+package ustc.sse.meitu.activity;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+
+import ustc.sse.meitu.utils.DividerItemDecoration;
+import ustc.sse.meitu.R;
+import ustc.sse.meitu.adapter.ImageAdapter;
+import ustc.sse.meitu.pojo.Image;
 
 public class MeActivity extends AppCompatActivity {
 

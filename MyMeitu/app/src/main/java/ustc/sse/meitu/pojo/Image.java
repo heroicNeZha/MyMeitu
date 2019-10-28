@@ -1,4 +1,4 @@
-package ustc.sse.meitu;
+package ustc.sse.meitu.pojo;
 
 public class Image {
     private int id;

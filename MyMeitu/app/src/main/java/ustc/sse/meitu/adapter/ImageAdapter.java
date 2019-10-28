@@ -1,4 +1,4 @@
-package ustc.sse.meitu;
+package ustc.sse.meitu.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+
+import ustc.sse.meitu.R;
+import ustc.sse.meitu.pojo.Image;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
 
