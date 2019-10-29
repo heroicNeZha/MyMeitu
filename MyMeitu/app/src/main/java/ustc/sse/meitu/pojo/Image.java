@@ -1,20 +1,31 @@
 package ustc.sse.meitu.pojo;
 
+import android.graphics.Bitmap;
+
 public class Image {
-    private int id;
+    private String path;
+    private Bitmap bitmap;
     private String text;
 
-    public Image(int id, String text) {
-        this.id = id;
+    public Image(String path, String text) {
+        this.path = path;
         this.text = text;
     }
 
-    public int getId() {
-        return id;
+    public String getPath() {
+        return path;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
     }
 
     public String getText() {

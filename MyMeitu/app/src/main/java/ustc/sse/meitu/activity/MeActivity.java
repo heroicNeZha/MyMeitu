@@ -8,10 +8,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,18 +55,11 @@ public class MeActivity extends AppCompatActivity {
     }
 
     private void initImage() {
-        try {
-            for (int i = 1; i <= 10; i++) {
-
-                Field field = R.drawable.class.getDeclaredField("img" + i);
-                field.setAccessible(true);
-                Image image = new Image(field.getInt(field.getName()), "第" + i + "张图片");
-                images.add(image);
-            }
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        File dir = new File(Environment.getExternalStorageDirectory().getPath() + "/data/ustc.meitu/");
+        File[] files = dir.listFiles();
+        for (File f : files) {
+            Image image = new Image(f.getPath(), "图片id" + f.getName());
+            images.add(image);
         }
     }
 
