@@ -7,42 +7,36 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import android.os.Environment;
+import android.os.StrictMode;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import android.os.Environment;
-import android.os.StrictMode;
-import android.provider.ContactsContract;
-import android.view.MenuItem;
-import android.widget.ListAdapter;
-import android.widget.TextView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ustc.sse.meitu.R;
-import ustc.sse.meitu.adapter.ImageAdapter;
 import ustc.sse.meitu.adapter.LocalImageAdapter;
 import ustc.sse.meitu.pojo.Image;
-import ustc.sse.meitu.utils.DividerItemDecoration;
-import ustc.sse.meitu.utils.ToastUtils;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LocalImageAdapter.onItemClickListener {
 
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -56,23 +50,38 @@ public class MainActivity extends AppCompatActivity {
 
     LocalImageAdapter imageAdapter;
 
+
+    @BindView(R.id.ll_delete)
+    ConstraintLayout llDelete;
+
+    @BindView(R.id.rv_local)
+    RecyclerView rvLocal;
+    @BindView(R.id.iv_delete)
+    ImageView ivDelete;
+    @BindView(R.id.tv_delete)
+    TextView tvDelete;
+    @BindView(R.id.iv_cancle)
+    ImageView ivCancle;
+    @BindView(R.id.tv_cancle)
+    TextView tvCancle;
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
-                Intent intent;
-                switch (item.getItemId()) {
-                    case R.id.navigation_home:
-                        return true;
-                    case R.id.navigation_dashboard:
-                        intent = new Intent(MainActivity.this, AddActivity.class);
-                        startActivity(intent);
-                        return true;
-                    case R.id.navigation_notifications:
-                        intent = new Intent(MainActivity.this, MeActivity.class);
-                        startActivity(intent);
-                        return true;
-                }
-                return false;
-            };
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.navigation_home:
+                return true;
+            case R.id.navigation_dashboard:
+                intent = new Intent(MainActivity.this, AddActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.navigation_notifications:
+                intent = new Intent(MainActivity.this, MeActivity.class);
+                startActivity(intent);
+                return true;
+        }
+        return false;
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -117,13 +127,13 @@ public class MainActivity extends AppCompatActivity {
     private void initRecycleView() {
         images = new ArrayList<>();
         initImage(images);
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_local);
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);//布局管理器
+        rvLocal.setLayoutManager(layoutManager);//布局管理器
         imageAdapter = new LocalImageAdapter();
+        imageAdapter.setListener(this);
         imageAdapter.replaceAll(images);
-        recyclerView.setAdapter(imageAdapter);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        rvLocal.setAdapter(imageAdapter);
+        rvLocal.setItemAnimator(new DefaultItemAnimator());
     }
 
     private void initImage(List<Image> images) {
@@ -131,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         File dir = new File(Environment.getExternalStorageDirectory().getPath() + "/data/ustc.meitu/");
         File[] files = dir.listFiles();
         for (File f : files) {
-            Image image = new Image(f.getPath(), "图片id" + f.getName());
+            Image image = new Image(f.getPath(), "图片" + f.getName().substring(0,13)+"说点什么吧..");
             try {
                 FileInputStream fis = new FileInputStream(image.getPath());
                 Bitmap bitmap = BitmapFactory.decodeStream(fis);
@@ -157,4 +167,38 @@ public class MainActivity extends AppCompatActivity {
         normalDialog.show();
     }
 
+    //监听器
+    @Override
+    public void onItemClick(Image image) {
+
+    }
+
+    @Override
+    public void onItemLongClick(Image image) {
+        if (!llDelete.isShown()) {
+            llDelete.setVisibility(View.VISIBLE);
+            navView.setVisibility(View.GONE);
+            ArrayList<Image> deleteArrayList = new ArrayList<>();
+            deleteArrayList.add(image);
+            imageAdapter.setDeleteArrayList(deleteArrayList);
+            imageAdapter.setInDeletionMode(true);
+        }
+    }
+
+    @OnClick({R.id.iv_delete, R.id.tv_delete})
+    public void onDeleteClick(View view) {
+        imageAdapter.deleteSelected();
+        llDelete.setVisibility(View.GONE);
+        navView.setVisibility(View.VISIBLE);
+        imageAdapter.setInDeletionMode(false);
+    }
+
+    @OnClick({ R.id.iv_cancle, R.id.tv_cancle})
+    public void onCancleClick(View view) {
+            llDelete.setVisibility(View.GONE);
+            navView.setVisibility(View.VISIBLE);
+            ArrayList<Image> deleteArrayList = new ArrayList<>();
+            imageAdapter.setDeleteArrayList(deleteArrayList);
+            imageAdapter.setInDeletionMode(false);
+    }
 }

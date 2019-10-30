@@ -122,13 +122,13 @@ public class LoginActivity extends AppCompatActivity {
         String password = _passwordText.getText().toString();
 
         if (username.isEmpty() || username.length() < 4) {
-            _usernameText.setError("enter a valid username address");
+            _usernameText.setError("输入有效用户名");
             valid = false;
         } else {
             _usernameText.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 7) {
+        if (password.isEmpty() || password.length() < 6) {
             _passwordText.setError("长度大于6");
             valid = false;
         } else {

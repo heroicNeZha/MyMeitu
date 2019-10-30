@@ -21,6 +21,7 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 import butterknife.OnTouch;
 import ustc.sse.meitu.R;
+import ustc.sse.meitu.utils.FileUtils;
 import ustc.sse.meitu.utils.ToastUtils;
 
 public class ImageActivity extends AppCompatActivity {
@@ -62,28 +63,12 @@ public class ImageActivity extends AppCompatActivity {
         normalDialog.setMessage("是否删除图片？");
         normalDialog.setPositiveButton("确定",
                 (dialog, which) -> {
-                    deleteFile(path);
+                    FileUtils.deleteFile(path);
                     ActivityCompat.finishAfterTransition(ImageActivity.this);
                 });
         normalDialog.setNegativeButton("关闭",
                 (dialog, which) -> {
                 });
         normalDialog.show();
-    }
-
-    public boolean deleteFile(String fileName) {
-        File file = new File(fileName);
-        if (file.exists() && file.isFile()) {
-            if (file.delete()) {
-                System.out.println("删除单个文件" + fileName + "成功！");
-                return true;
-            } else {
-                System.out.println("删除单个文件" + fileName + "失败！");
-                return false;
-            }
-        } else {
-            System.out.println("删除单个文件失败：" + fileName + "不存在！");
-            return false;
-        }
     }
 }
