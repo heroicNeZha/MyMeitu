@@ -38,8 +38,10 @@ import ustc.sse.meitu.adapter.LocalImageAdapter;
 import ustc.sse.meitu.pojo.Image;
 import ustc.sse.meitu.utils.ScreenUtils;
 import ustc.sse.meitu.utils.ToastUtils;
+import ustc.sse.meitu.pojo.picData;
 
 public class AddActivity extends AppCompatActivity {
+    public static picData mRect;
 
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.CAMERA
@@ -58,7 +60,7 @@ public class AddActivity extends AppCompatActivity {
 
     private static final int ALBUM_REQUEST_CODE = 1;
     private static final int CAMERA_REQUEST_CODE = 2;
-//    private static final int CROP_REQUEST_CODE = 3;
+    private static final int CROP_REQUEST_CODE = 3;
 
     private File tempFile;
 
@@ -89,6 +91,8 @@ public class AddActivity extends AppCompatActivity {
 
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
+
+        mRect = (picData) this.getApplicationContext();
 
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navView.getMenu().getItem(1).setChecked(true);
@@ -136,8 +140,9 @@ public class AddActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     Uri uri = Uri.fromFile(tempFile);
                     Bitmap bitmap = decodeUriAsBitmap(uri);
-                    setAndSaveBitmap(bitmap);
-//                    cropPhoto(Uri.fromFile(tempFile));
+                    mRect.setmBase(bitmap);
+                    Intent intent1 = new Intent(this, Main1Activity.class);
+                    startActivityForResult(intent1, CROP_REQUEST_CODE);
                 }
                 break;
             //调用相册后返回
@@ -148,6 +153,10 @@ public class AddActivity extends AppCompatActivity {
                     setAndSaveBitmap(bitmap);
 //                    cropPhoto(uri);
                 }
+                break;
+            case CROP_REQUEST_CODE:
+                Bitmap bitmap = mRect.getmBase();
+                setAndSaveBitmap(bitmap);
                 break;
 //            调用剪裁后返回
 //            case CROP_REQUEST_CODE:

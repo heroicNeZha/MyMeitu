@@ -17,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ustc.sse.meitu.R;
+import ustc.sse.meitu.Service.UserService;
+import ustc.sse.meitu.pojo.User;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -32,6 +34,8 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.link_signup)
     TextView _signupLink;
 
+    UserService userService;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +49,8 @@ public class LoginActivity extends AppCompatActivity {
                 login();
             }
         });
+
+        userService = new UserService();
 
         _signupLink.setOnClickListener(new View.OnClickListener() {
 
@@ -68,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
         _loginButton.setEnabled(false);
 
 
-        String email = _usernameText.getText().toString();
+        String username = _usernameText.getText().toString();
         String password = _passwordText.getText().toString();
 
         // TODO: Implement your own authentication logic here.
@@ -81,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
                         // onLoginFailed();
                         //progressDialog.dismiss();
                     }
-                },100);
+                }, 100);
     }
 
 
@@ -120,11 +126,12 @@ public class LoginActivity extends AppCompatActivity {
 
         String username = _usernameText.getText().toString();
         String password = _passwordText.getText().toString();
-
+        User user = new User();
         if (username.isEmpty() || username.length() < 4) {
             _usernameText.setError("输入有效用户名");
             valid = false;
         } else {
+            user.setUsername(username);
             _usernameText.setError(null);
         }
 
@@ -132,8 +139,10 @@ public class LoginActivity extends AppCompatActivity {
             _passwordText.setError("长度大于6");
             valid = false;
         } else {
+            user.setPassword(password);
             _passwordText.setError(null);
         }
+
 
         return valid;
     }

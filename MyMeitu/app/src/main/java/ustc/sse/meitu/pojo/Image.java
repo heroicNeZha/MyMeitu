@@ -6,19 +6,10 @@ public class Image {
     private String path;
     private Bitmap bitmap;
     private String text;
-    private Boolean isDelete;
 
     public Image(String path, String text) {
         this.path = path;
         this.text = text;
-    }
-
-    public Boolean getDelete() {
-        return isDelete;
-    }
-
-    public void setDelete(Boolean delete) {
-        isDelete = delete;
     }
 
     public String getPath() {
