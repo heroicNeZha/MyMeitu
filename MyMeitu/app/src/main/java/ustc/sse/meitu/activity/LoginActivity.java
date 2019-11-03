@@ -18,12 +18,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ustc.sse.meitu.R;
 import ustc.sse.meitu.Service.UserService;
+import ustc.sse.meitu.pojo.MyApplicationContext;
 import ustc.sse.meitu.pojo.User;
 
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
+
+    private MyApplicationContext myAppCtx;
+
 
     @BindView(R.id.et_username)
     EditText _usernameText;
@@ -41,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-
+        myAppCtx = ((MyApplicationContext) this.getApplicationContext());
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -73,21 +77,28 @@ public class LoginActivity extends AppCompatActivity {
 
         _loginButton.setEnabled(false);
 
-
         String username = _usernameText.getText().toString();
         String password = _passwordText.getText().toString();
 
         // TODO: Implement your own authentication logic here.
 
-        new Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onLoginSuccess or onLoginFailed
-                        onLoginSuccess();
-                        // onLoginFailed();
-                        //progressDialog.dismiss();
-                    }
-                }, 100);
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String result = userService.Login(user);
+                if (result.split(":", 2)[0].equals("success")) {
+                    myAppCtx.setToken(result.split(":", 2)[1]);
+                    onLoginSuccess();
+                } else {
+                    _passwordText.post(() -> _passwordText.setError(result.split(":", 2)[1]));
+                    onLoginFailed();
+                }
+            }
+        }).start();
     }
 
 

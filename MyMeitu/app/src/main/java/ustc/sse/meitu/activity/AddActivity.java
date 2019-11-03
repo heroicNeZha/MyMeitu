@@ -18,30 +18,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ustc.sse.meitu.R;
-import ustc.sse.meitu.adapter.LocalImageAdapter;
-import ustc.sse.meitu.pojo.Image;
+import ustc.sse.meitu.pojo.MyApplicationContext;
 import ustc.sse.meitu.utils.ScreenUtils;
-import ustc.sse.meitu.utils.ToastUtils;
-import ustc.sse.meitu.pojo.picData;
+import ustc.sse.meitu.pojo.PicData;
 
 public class AddActivity extends AppCompatActivity {
-    public static picData mRect;
+    public static PicData mRect;
 
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.CAMERA
@@ -92,7 +87,7 @@ public class AddActivity extends AppCompatActivity {
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
-        mRect = (picData) this.getApplicationContext();
+        mRect = ((MyApplicationContext) this.getApplicationContext()).getPicData();
 
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navView.getMenu().getItem(1).setChecked(true);

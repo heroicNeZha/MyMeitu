@@ -10,7 +10,9 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import ustc.sse.meitu.pojo.picData;
+
+import ustc.sse.meitu.pojo.MyApplicationContext;
+import ustc.sse.meitu.pojo.PicData;
 
 public class cutView extends View {
     float downX;    //按下的X坐标
@@ -31,7 +33,7 @@ public class cutView extends View {
     private int maxHeight; //边界高度
     private Paint rectpaint;    //框画笔
     private Paint cornerpaint;  //角落画笔
-    static picData mRect;   //View间的共享数据
+    static PicData mRect;   //View间的共享数据
 
 
 
@@ -54,7 +56,7 @@ public class cutView extends View {
         * @param [context] 参数描述
         * @return void 返回值描述
         */
-        mRect = (picData) context.getApplicationContext();
+        mRect = ((MyApplicationContext) context.getApplicationContext()).getPicData();
         rectLeft = mRect.getCutRectLeft();
         rectTop = mRect.getCutRectTop();
         rectRight = mRect.getCutRectRight();

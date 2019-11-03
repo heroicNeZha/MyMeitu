@@ -3,7 +3,6 @@ package ustc.sse.meitu.widget;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -18,7 +17,8 @@ import android.widget.FrameLayout;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import ustc.sse.meitu.R;
-import ustc.sse.meitu.pojo.picData;
+import ustc.sse.meitu.pojo.MyApplicationContext;
+import ustc.sse.meitu.pojo.PicData;
 
 public class pagicView extends AppCompatImageView {
     private Matrix mMatrix;
@@ -30,7 +30,7 @@ public class pagicView extends AppCompatImageView {
     private float mPreScale;    //图片需要改变的规模参数，用来适应Layout
     public float mLayoutWidth;     //屏幕宽度，用来改变图片和所在Layout大小
     public float mLayoutHeight;    //屏幕高度，用来改变图片和所在Layout大小
-    public static picData mRect;      //传递共享数据,主要对其中的图片进行操作
+    public static PicData mRect;      //传递共享数据,主要对其中的图片进行操作
 
     private enum mState {
         START,
@@ -73,7 +73,7 @@ public class pagicView extends AppCompatImageView {
         //需要操作的图片
 //        mBase = scaleBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.bot).copy(Bitmap.Config.ARGB_8888, true));
 
-        mRect = (picData)getContext().getApplicationContext();
+        mRect = ((MyApplicationContext) getContext().getApplicationContext()).getPicData();
         mBase = scaleBitmap(mRect.getmBase());
         mRect.setCutRectLeft(0);
         mRect.setCutRectTop(0);

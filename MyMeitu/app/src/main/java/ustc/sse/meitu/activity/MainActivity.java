@@ -39,6 +39,7 @@ import ustc.sse.meitu.pojo.Image;
 public class MainActivity extends AppCompatActivity implements LocalImageAdapter.onItemClickListener {
 
     private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.INTERNET,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
     };
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements LocalImageAdapter
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
-        if (verifyPermissions(MainActivity.this, PERMISSIONS_STORAGE[0]) == 0) {
+        if (verifyPermissions(MainActivity.this, PERMISSIONS_STORAGE[0])||verifyPermissions(MainActivity.this, PERMISSIONS_STORAGE[1])) {
             ActivityCompat.requestPermissions(MainActivity.this, PERMISSIONS_STORAGE, 3);
         }
 
@@ -107,12 +108,12 @@ public class MainActivity extends AppCompatActivity implements LocalImageAdapter
     }
 
     //检查权限
-    public int verifyPermissions(Activity activity, String permission) {
+    public boolean verifyPermissions(Activity activity, String permission) {
         int Permission = ActivityCompat.checkSelfPermission(activity, permission);
         if (Permission == PackageManager.PERMISSION_GRANTED) {
-            return 1;
+            return true;
         } else {
-            return 0;
+            return false;
         }
     }
 

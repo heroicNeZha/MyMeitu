@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center|top">
+        <ImageView
+            android:id="@+id/red_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/color_circle_red"/>
+        <ImageView
+            android:id="@+id/blue_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/color_circle_blue"/>
+        <ImageView
+            android:id="@+id/green_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/color_circle_green"/>
+        <ImageView
+            android:id="@+id/indigo_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/color_circle_indigo"/>
+        <ImageView
+            android:id="@+id/orange_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/color_circle_orange"/>
+        <ImageView
+            android:id="@+id/purple_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/color_circle_purple" />
+        <ImageView
+            android:id="@+id/yellow_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/color_circle_yellow" />
+        <ImageView
+            android:id="@+id/black_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/color_circle_black">
+        </ImageView>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginRight="25dp"
+            android:layout_marginLeft="25dp"
+            android:background="@drawable/parting_line">
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/brush1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/brush_size1">
+
+        </ImageView>
+        <ImageView
+            android:id="@+id/brush2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/brush_size2">
+        </ImageView>
+        <ImageView
+            android:id="@+id/brush3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/brush_size3">
+        </ImageView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/chosen_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/color_circle_red"/>
+
+        <ImageView
+            android:id="@+id/line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="60dp"
+            android:background="@drawable/parting_line"/>
+        <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+        <ImageView
+            android:id="@+id/chosen_width"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/brush_size1"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/opBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="bottom">
+
+        <ImageView
+            android:id="@+id/confirm_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_margin="16dp"
+            android:background="@drawable/black_tranp_circle_ripple"
+            android:src="@drawable/confirm_icon" />
+
+        <ImageView
+            android:id="@+id/cancel_button"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_margin="16dp"
+            android:background="@drawable/black_tranp_circle_ripple"
+            android:src="@drawable/cancel_icon" />
+    </RelativeLayout>
+</FrameLayout>

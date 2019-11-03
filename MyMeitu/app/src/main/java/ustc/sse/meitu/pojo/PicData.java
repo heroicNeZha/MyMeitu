@@ -3,7 +3,7 @@ package ustc.sse.meitu.pojo;
 import android.app.Application;
 import android.graphics.Bitmap;
 
-public class picData extends Application {
+public class PicData {
     /**
     * 方法描述  用于在各个View之间传递截图数据
     * @param  参数描述

@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -34,6 +35,7 @@ public class UserService {
         Gson gson = new Gson();
         String json = gson.toJson(data);
         String responseJson = HttpUtil.post(HttpUtil.BASE_URL + "/api/user/", json);
+        System.out.println(responseJson);
         Map<String, String> response = gson.fromJson(responseJson, mapType);
         if (response.size() == 3) {
             return "success:" + response.get("token");

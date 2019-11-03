@@ -12,7 +12,8 @@ import android.view.inputmethod.InputMethodManager;
 
 import androidx.appcompat.widget.AppCompatEditText;
 
-import ustc.sse.meitu.pojo.picData;
+import ustc.sse.meitu.pojo.MyApplicationContext;
+import ustc.sse.meitu.pojo.PicData;
 
 import static android.util.TypedValue.COMPLEX_UNIT_PX;
 
@@ -33,7 +34,7 @@ public class textView extends AppCompatEditText {
     private int maxHeight; //边界高度
     private Paint rectpaint;    //框画笔
     private Paint cornerpaint;  //角落画笔
-    static picData mRect;   //View间的共享数据
+    static PicData mRect;   //View间的共享数据
 
     public textView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -55,7 +56,7 @@ public class textView extends AppCompatEditText {
         * @param [context] 参数描述
         * @return void 返回值描述
         */
-        mRect = (picData) context.getApplicationContext();
+        mRect = ((MyApplicationContext) context.getApplicationContext()).getPicData();
         maxHeight = (int)mRect.getPagicBottom();
         maxWidth = (int)mRect.getPagicRight();
         rectpaint = new Paint();

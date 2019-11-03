@@ -22,8 +22,8 @@ public class ExampleUnitTest {
     public void testUserService() {
         UserService userService = new UserService();
         User user = new User();
-        user.setUsername("test");
-        user.setPassword("test2");
+        user.setUsername("gggggggg");
+        user.setPassword("tggggggggg");
         System.out.println(userService.Login(user).split(":",2)[1]);
     }
 

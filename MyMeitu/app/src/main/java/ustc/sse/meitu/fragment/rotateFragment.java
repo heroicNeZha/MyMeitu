@@ -16,8 +16,6 @@ import androidx.annotation.Nullable;
 
 import ustc.sse.meitu.R;
 
-import ustc.sse.meitu.pojo.picData;
-import ustc.sse.meitu.widget.cutView;
 import ustc.sse.meitu.widget.pagicView;
 
 public class rotateFragment extends Fragment {
