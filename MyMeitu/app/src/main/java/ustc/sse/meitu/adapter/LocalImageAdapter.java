@@ -2,35 +2,52 @@ package ustc.sse.meitu.adapter;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import butterknife.BindView;
 import ustc.sse.meitu.R;
+import ustc.sse.meitu.Service.ImageService;
 import ustc.sse.meitu.activity.ImageActivity;
 import ustc.sse.meitu.pojo.Image;
+import ustc.sse.meitu.pojo.MyApplicationContext;
 import ustc.sse.meitu.utils.FileUtils;
 import ustc.sse.meitu.utils.ScreenUtils;
 
 public class LocalImageAdapter extends RecyclerView.Adapter<LocalImageAdapter.ViewHolder> {
 
-    private ArrayList<Image> imageArrayList = new ArrayList<>();
-    private ArrayList<Image> deleteArrayList = new ArrayList<>();
+    private MyApplicationContext myAppCtx;
+    private ImageService imageService;
+
+    private ArrayList<Image> imageArrayList;
+    private ArrayList<Image> deleteArrayList;
+
+    private onItemClickListener listener;
+
+    public LocalImageAdapter(Context context) {
+        super();
+        myAppCtx = ((MyApplicationContext) context.getApplicationContext());
+        imageService = new ImageService();
+        imageArrayList = new ArrayList<>();
+        deleteArrayList = new ArrayList<>();
+    }
 
     public void setDeleteArrayList(ArrayList<Image> deleteArrayList) {
         this.deleteArrayList = deleteArrayList;
     }
-
-    private onItemClickListener listener;
 
     //设置监听器
     public void setListener(onItemClickListener listener) {
@@ -101,12 +118,24 @@ public class LocalImageAdapter extends RecyclerView.Adapter<LocalImageAdapter.Vi
         return imageArrayList != null ? imageArrayList.size() : 0;
     }
 
+    //底部按钮
     public void deleteSelected() {
         for (Image img : deleteArrayList) {
             imageArrayList.remove(img);
             FileUtils.deleteFile(img.getPath());
         }
         deleteArrayList.clear();
+    }
+
+    public boolean uploadSelected() {
+        new Thread() {
+            @Override
+            public void run() {
+                Map<String, String> map = imageService.upload(myAppCtx.getToken(), deleteArrayList);
+                System.out.println(map);
+            }
+        }.start();
+        return true;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -119,11 +148,6 @@ public class LocalImageAdapter extends RecyclerView.Adapter<LocalImageAdapter.Vi
             ivImage = (ImageView) view.findViewById(R.id.iv_image);
             tvDesc = (TextView) view.findViewById(R.id.tv_desc);
             checkbox = (CheckBox) view.findViewById(R.id.cb_delete);
-
-            int width = ScreenUtils.getScreenWidth((Activity) ivImage.getContext());
-            ViewGroup.LayoutParams params = ivImage.getLayoutParams();
-            params.width = width / 2;
-            ivImage.setLayoutParams(params);
         }
     }
 

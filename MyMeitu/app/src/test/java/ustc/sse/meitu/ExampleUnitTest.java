@@ -4,13 +4,14 @@ import com.google.gson.Gson;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
+import ustc.sse.meitu.Service.ImageService;
 import ustc.sse.meitu.Service.UserService;
+import ustc.sse.meitu.pojo.Image;
 import ustc.sse.meitu.pojo.User;
-
-import static org.junit.Assert.*;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -24,7 +25,7 @@ public class ExampleUnitTest {
         User user = new User();
         user.setUsername("gggggggg");
         user.setPassword("tggggggggg");
-        System.out.println(userService.Login(user).split(":",2)[1]);
+        System.out.println(userService.Login(user).split(":", 2)[1]);
     }
 
     @Test
@@ -36,5 +37,20 @@ public class ExampleUnitTest {
         Gson gson = new Gson();
         String json = gson.toJson(data);
         System.out.println(json);
+    }
+
+    @Test
+    public void testUpload() {
+        UserService userService = new UserService();
+        User user = new User();
+        user.setUsername("test");
+        user.setPassword("test");
+        String token = userService.Login(user).split(":", 2)[1];
+        Image image = new Image("/image1.jpeg", "test");
+        ImageService imageService = new ImageService();
+        ArrayList<Image> images = new ArrayList<>();
+        images.add(image);
+        Map<String,String> map = imageService.upload(token, images);
+        System.out.println(map.toString());
     }
 }

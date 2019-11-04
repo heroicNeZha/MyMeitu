@@ -35,6 +35,7 @@ import butterknife.OnClick;
 import ustc.sse.meitu.R;
 import ustc.sse.meitu.adapter.LocalImageAdapter;
 import ustc.sse.meitu.pojo.Image;
+import ustc.sse.meitu.utils.ToastUtils;
 
 public class MainActivity extends AppCompatActivity implements LocalImageAdapter.onItemClickListener {
 
@@ -65,6 +66,8 @@ public class MainActivity extends AppCompatActivity implements LocalImageAdapter
     ImageView ivCancle;
     @BindView(R.id.tv_cancle)
     TextView tvCancle;
+    @BindView(R.id.container)
+    ConstraintLayout container;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
@@ -98,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements LocalImageAdapter
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
-        if (verifyPermissions(MainActivity.this, PERMISSIONS_STORAGE[0])||verifyPermissions(MainActivity.this, PERMISSIONS_STORAGE[1])) {
+        if (verifyPermissions(MainActivity.this, PERMISSIONS_STORAGE[0]) || verifyPermissions(MainActivity.this, PERMISSIONS_STORAGE[1])) {
             ActivityCompat.requestPermissions(MainActivity.this, PERMISSIONS_STORAGE, 3);
         }
 
@@ -130,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements LocalImageAdapter
         initImage(images);
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         rvLocal.setLayoutManager(layoutManager);//布局管理器
-        imageAdapter = new LocalImageAdapter();
+        imageAdapter = new LocalImageAdapter(this);
         imageAdapter.setListener(this);
         imageAdapter.replaceAll(images);
         rvLocal.setAdapter(imageAdapter);
@@ -142,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements LocalImageAdapter
         File dir = new File(Environment.getExternalStorageDirectory().getPath() + "/data/ustc.meitu/");
         File[] files = dir.listFiles();
         for (File f : files) {
-            Image image = new Image(f.getPath(), "图片" + f.getName().substring(0,13)+"说点什么吧..");
+            Image image = new Image(f.getPath(), "图片" + f.getName().substring(0, 13) + "说点什么吧..");
             try {
                 FileInputStream fis = new FileInputStream(image.getPath());
                 Bitmap bitmap = BitmapFactory.decodeStream(fis);
@@ -194,12 +197,23 @@ public class MainActivity extends AppCompatActivity implements LocalImageAdapter
         imageAdapter.setInDeletionMode(false);
     }
 
-    @OnClick({ R.id.iv_cancle, R.id.tv_cancle})
+    @OnClick({R.id.iv_cancle, R.id.tv_cancle})
     public void onCancleClick(View view) {
-            llDelete.setVisibility(View.GONE);
-            navView.setVisibility(View.VISIBLE);
-            ArrayList<Image> deleteArrayList = new ArrayList<>();
-            imageAdapter.setDeleteArrayList(deleteArrayList);
-            imageAdapter.setInDeletionMode(false);
+        llDelete.setVisibility(View.GONE);
+        navView.setVisibility(View.VISIBLE);
+        ArrayList<Image> deleteArrayList = new ArrayList<>();
+        imageAdapter.setDeleteArrayList(deleteArrayList);
+        imageAdapter.setInDeletionMode(false);
+    }
+
+    @OnClick({R.id.iv_upload, R.id.tv_upload})
+    public void onUploadClick(View view) {
+        if(imageAdapter.uploadSelected())
+            ToastUtils.showLong(this,"删除成功！");
+        else
+            ToastUtils.showLong(this,"删除失败！");
+        llDelete.setVisibility(View.GONE);
+        navView.setVisibility(View.VISIBLE);
+        imageAdapter.setInDeletionMode(false);
     }
 }

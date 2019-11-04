@@ -2,20 +2,18 @@ package ustc.sse.meitu.utils;
 
 
 import android.content.Context;
+import android.os.Looper;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 /**
  * Toast统一管理类
- *
  */
-public class ToastUtils
-{
+public class ToastUtils {
 
     private ViewGroup.LayoutParams layoutParams;
 
-    private ToastUtils()
-    {
+    private ToastUtils() {
         /* cannot be instantiated */
         throw new UnsupportedOperationException("cannot be instantiated");
     }
@@ -28,8 +26,7 @@ public class ToastUtils
      * @param context
      * @param message
      */
-    public static void showShort(Context context, CharSequence message)
-    {
+    public static void showShort(Context context, CharSequence message) {
         if (isShow)
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
@@ -40,8 +37,7 @@ public class ToastUtils
      * @param context
      * @param message
      */
-    public static void showShort(Context context, int message)
-    {
+    public static void showShort(Context context, int message) {
         if (isShow)
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
@@ -52,8 +48,7 @@ public class ToastUtils
      * @param context
      * @param message
      */
-    public static void showLong(Context context, CharSequence message)
-    {
+    public static void showLong(Context context, CharSequence message) {
         if (isShow)
             Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
@@ -64,8 +59,7 @@ public class ToastUtils
      * @param context
      * @param message
      */
-    public static void showLong(Context context, int message)
-    {
+    public static void showLong(Context context, int message) {
         if (isShow)
             Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
@@ -77,8 +71,7 @@ public class ToastUtils
      * @param message
      * @param duration
      */
-    public static void show(Context context, CharSequence message, int duration)
-    {
+    public static void show(Context context, CharSequence message, int duration) {
         if (isShow)
             Toast.makeText(context, message, duration).show();
     }
@@ -90,12 +83,17 @@ public class ToastUtils
      * @param message
      * @param duration
      */
-    public static void show(Context context, int message, int duration)
-    {
-        if (isShow)
-            Toast.makeText(context, message, duration).show();
+    public static void show(Context context, int message, int duration) {
+        try {
+            if (isShow)
+                Toast.makeText(context, message, duration).show();
+        } catch (Exception e) {
+            //解决在子线程中调用Toast的异常情况处理
+            Looper.prepare();
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+            Looper.loop();
+        }
     }
-
 
 
 }

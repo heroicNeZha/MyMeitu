@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -20,6 +22,7 @@ import ustc.sse.meitu.R;
 import ustc.sse.meitu.Service.UserService;
 import ustc.sse.meitu.pojo.MyApplicationContext;
 import ustc.sse.meitu.pojo.User;
+import ustc.sse.meitu.utils.ToastUtils;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -86,21 +89,33 @@ public class LoginActivity extends AppCompatActivity {
         user.setUsername(username);
         user.setPassword(password);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String result = userService.Login(user);
-                if (result.split(":", 2)[0].equals("success")) {
-                    myAppCtx.setToken(result.split(":", 2)[1]);
-                    onLoginSuccess();
-                } else {
-                    _passwordText.post(() -> _passwordText.setError(result.split(":", 2)[1]));
-                    onLoginFailed();
-                }
-            }
+        new Thread(() -> {
+            String result = userService.Login(user);
+            Message msg = new Message();
+            Bundle data = new Bundle();
+            data.putString("value", result);
+            msg.setData(data);
+            handler.sendMessage(msg);
         }).start();
     }
 
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            Bundle data = msg.getData();
+            String result = data.getString("value");
+            if (result.split(":", 2)[0].
+
+                    equals("success")) {
+                myAppCtx.setToken(result.split(":", 2)[1]);
+                onLoginSuccess();
+            } else {
+                onLoginFailed();
+                _passwordText.post(() -> _passwordText.setError(result.split(":", 2)[1]));
+            }
+        }
+    };
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -127,9 +142,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLoginFailed() {
-        Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_LONG).show();
-
-        _loginButton.setEnabled(true);
+        ToastUtils.showLong(LoginActivity.this, "Login failed");
+        _loginButton.post(() -> _loginButton.setEnabled(true));
     }
 
     public boolean validate() {
@@ -146,8 +160,8 @@ public class LoginActivity extends AppCompatActivity {
             _usernameText.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 6) {
-            _passwordText.setError("长度大于6");
+        if (password.isEmpty() || password.length() < 4) {
+            _passwordText.setError("长度大于4");
             valid = false;
         } else {
             user.setPassword(password);

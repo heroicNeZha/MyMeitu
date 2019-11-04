@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +17,10 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ustc.sse.meitu.R;
+import ustc.sse.meitu.Service.UserService;
+import ustc.sse.meitu.pojo.MyApplicationContext;
+import ustc.sse.meitu.pojo.User;
+import ustc.sse.meitu.utils.ToastUtils;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -31,12 +37,18 @@ public class RegisterActivity extends AppCompatActivity {
     @BindView(R.id.link_login)
     TextView _loginLink;
 
+    UserService userService;
+
+    private MyApplicationContext myAppCtx;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
+
+        myAppCtx = ((MyApplicationContext) this.getApplicationContext());
+        userService = new UserService();
 
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,27 +79,48 @@ public class RegisterActivity extends AppCompatActivity {
         //可以使用进度条
 
         String name = _nameText.getText().toString();
-        String email = _usernameText.getText().toString();
+        String username = _usernameText.getText().toString();
         String password = _passwordText.getText().toString();
 
         // TODO: Implement your own signup logic here.
 
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onSignupSuccess or onSignupFailed
-                        // depending on success
-                        onSignupSuccess();
-                        // onSignupFailed();
-                        //progressDialog.dismiss();
-                    }
-                }, 100);
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+
+        new Thread(() -> {
+            String result = userService.Register(user);
+            Message msg = new Message();
+            Bundle data = new Bundle();
+            data.putString("value", result);
+            msg.setData(data);
+            handler.sendMessage(msg);
+        }).start();
     }
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            Bundle data = msg.getData();
+            String result = data.getString("value");
+            if (result.split(":", 2)[0].
+
+                    equals("success")) {
+                myAppCtx.setToken(result.split(":", 2)[1]);
+                onSignupSuccess();
+            } else {
+                onSignupFailed();
+                _passwordText.post(() -> _passwordText.setError(result.split(":", 2)[1]));
+            }
+        }
+    };
 
 
     public void onSignupSuccess() {
         _signupButton.setEnabled(true);
         setResult(RESULT_OK, null);
+        ToastUtils.showShort(getBaseContext(),"注册成功");
         finish();
     }
 
@@ -111,14 +144,14 @@ public class RegisterActivity extends AppCompatActivity {
             _nameText.setError(null);
         }
 
-        if (username.isEmpty() || username.length() < 6) {
+        if (username.isEmpty() || username.length() < 4) {
             _usernameText.setError("输入有效用户名");
             valid = false;
         } else {
             _usernameText.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
+        if (password.isEmpty() || password.length() < 4 || password.length() > 20) {
             _passwordText.setError("密码大于6位且不能为空");
             valid = false;
         } else {
