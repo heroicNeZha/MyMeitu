@@ -1,9 +1,14 @@
 package ustc.sse.meitu.Service;
 
+import android.graphics.Bitmap;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -20,8 +25,16 @@ public class ImageService {
     public Map<String, String> upload(String token, List<Image> images) {
         Map<String, String> data = new TreeMap<>();
         data.put("token", token);
-        for (int i = 0; i < images.size(); i++) {
-            data.put("img" + i + " path", images.get(i).getPath().split("0/",2)[1]);
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            for (int i = 0; i < images.size(); i++) {
+                out.flush();
+                Bitmap bitmap = images.get(i).getBitmap();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 30, out);
+                data.put("img" + i + " " + images.get(i).getPath(), Arrays.toString(out.toByteArray()));
+            }
+            out.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         Gson gson = new Gson();
         String json = gson.toJson(data);
