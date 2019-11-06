@@ -5,14 +5,12 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sackcentury.shinebuttonlib.ShineButton;
@@ -21,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 
-import butterknife.BindView;
 import ustc.sse.meitu.R;
 import ustc.sse.meitu.Service.ImageService;
 import ustc.sse.meitu.activity.ImageActivity;
@@ -29,9 +26,8 @@ import ustc.sse.meitu.listener.onItemClickListener;
 import ustc.sse.meitu.pojo.Image;
 import ustc.sse.meitu.pojo.MyApplicationContext;
 import ustc.sse.meitu.utils.FileUtils;
-import ustc.sse.meitu.utils.ScreenUtils;
 
-public class LocalImageAdapter extends RecyclerView.Adapter<LocalImageAdapter.ViewHolder> {
+public class OnlineImageAdaper extends RecyclerView.Adapter<OnlineImageAdaper.ViewHolder> {
 
     private MyApplicationContext myAppCtx;
     private ImageService imageService;
@@ -43,7 +39,7 @@ public class LocalImageAdapter extends RecyclerView.Adapter<LocalImageAdapter.Vi
 
     private Random random;
 
-    public LocalImageAdapter(Context context) {
+    public OnlineImageAdaper(Context context) {
         super();
         myAppCtx = ((MyApplicationContext) context.getApplicationContext());
         imageService = new ImageService();
@@ -77,22 +73,22 @@ public class LocalImageAdapter extends RecyclerView.Adapter<LocalImageAdapter.Vi
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ViewHolder viewHolder = new ViewHolder(LayoutInflater
+    public OnlineImageAdaper.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        OnlineImageAdaper.ViewHolder viewHolder = new OnlineImageAdaper.ViewHolder(LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.item_local, parent, false));
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(OnlineImageAdaper.ViewHolder holder, int position) {
         Image image = imageArrayList.get(position);
         holder.ivImage.setImageBitmap(image.getBitmap());
         holder.tvDesc.setText(image.getText());
 
         holder.tvLike.setText(String.valueOf(random.nextInt(100)));
         holder.btHeart.setOnClickListener(view -> {
-            holder.tvLike.setText(String.valueOf(Integer.valueOf(holder.tvLike.getText().toString())+1));
+            holder.tvLike.setText(String.valueOf(Integer.valueOf(holder.tvLike.getText().toString()) + 1));
         });
 
         holder.checkbox.setVisibility(inDeletionMode ? View.VISIBLE : View.GONE);
@@ -139,11 +135,10 @@ public class LocalImageAdapter extends RecyclerView.Adapter<LocalImageAdapter.Vi
         deleteArrayList.clear();
     }
 
-    public boolean uploadSelected() {
+    public boolean downloadSelected() {
         new Thread() {
             @Override
             public void run() {
-
                 Map<String, String> map = imageService.upload(myAppCtx.getToken(), deleteArrayList);
                 System.out.println(map);
             }

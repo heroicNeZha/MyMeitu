@@ -49,13 +49,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         Image image = imageList.get(position);
-        try {
-            FileInputStream fis = new FileInputStream(image.getPath());
-            Bitmap bitmap = BitmapFactory.decodeStream(fis);
-            viewHolder.pic.setImageBitmap(bitmap);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        viewHolder.pic.setImageBitmap(image.getBitmap());
         viewHolder.text.setText(image.getText());
     }
 

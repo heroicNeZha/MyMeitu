@@ -42,9 +42,40 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:visibility="gone"
         android:buttonTint="@color/colorAccent"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_desc"
+        app:srcCompat="@drawable/avator" />
+
+    <com.sackcentury.shinebuttonlib.ShineButton
+        android:id="@+id/bt_heart"
+        android:layout_width="14sp"
+        android:layout_height="14sp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        app:btn_color="@android:color/darker_gray"
+        app:btn_fill_color="#f26d7d"
+        app:layout_constraintEnd_toStartOf="@+id/tv_like"
+        app:layout_constraintTop_toBottomOf="@+id/tv_desc"
+        app:siShape="@raw/heart" />
+
+    <TextView
+        android:id="@+id/tv_like"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="4071"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_desc" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

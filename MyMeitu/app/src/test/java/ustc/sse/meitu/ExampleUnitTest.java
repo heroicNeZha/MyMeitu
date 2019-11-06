@@ -1,9 +1,15 @@
 package ustc.sse.meitu;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+
 import com.google.gson.Gson;
 
 import org.junit.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -50,7 +56,8 @@ public class ExampleUnitTest {
         ImageService imageService = new ImageService();
         ArrayList<Image> images = new ArrayList<>();
         images.add(image);
-        Map<String,String> map = imageService.upload(token, images);
+        Map<String, String> map = imageService.upload(token, images);
         System.out.println(map.toString());
     }
+
 }

@@ -29,7 +29,7 @@
             android:tint="@color/colorAccent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/ic_delete" />
+            app:srcCompat="@android:drawable/ic_menu_upload" />
 
         <TextView
             android:id="@+id/tv_upload"

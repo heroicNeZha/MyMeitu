@@ -1,5 +1,12 @@
 package ustc.sse.meitu.utils;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
 import java.io.IOException;
 
 import okhttp3.MediaType;
@@ -40,5 +47,13 @@ public class HttpUtil {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static String post(String url, HttpEntity entity) throws IOException {
+        HttpClient client = HttpClients.custom().build();
+        HttpPost post = new HttpPost(url);
+        post.setEntity(entity);
+        HttpResponse response = client.execute(post);
+        return EntityUtils.toString(response.getEntity());
     }
 }

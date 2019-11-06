@@ -20,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/ImageTranslucentTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.OnlineActivity"></activity>
+        <activity android:name=".activity.OnlineActivity" />
 
         <meta-data
             android:name="com.google.android.actions"

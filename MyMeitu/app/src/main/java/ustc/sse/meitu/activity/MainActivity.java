@@ -34,10 +34,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ustc.sse.meitu.R;
 import ustc.sse.meitu.adapter.LocalImageAdapter;
+import ustc.sse.meitu.listener.onItemClickListener;
 import ustc.sse.meitu.pojo.Image;
 import ustc.sse.meitu.utils.ToastUtils;
 
-public class MainActivity extends AppCompatActivity implements LocalImageAdapter.onItemClickListener {
+public class MainActivity extends AppCompatActivity implements onItemClickListener {
 
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.INTERNET,
@@ -149,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements LocalImageAdapter
             try {
                 FileInputStream fis = new FileInputStream(image.getPath());
                 Bitmap bitmap = BitmapFactory.decodeStream(fis);
+                bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() / 3, bitmap.getHeight() / 3, true);
                 image.setBitmap(bitmap);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -208,10 +210,10 @@ public class MainActivity extends AppCompatActivity implements LocalImageAdapter
 
     @OnClick({R.id.iv_upload, R.id.tv_upload})
     public void onUploadClick(View view) {
-        if(imageAdapter.uploadSelected())
-            ToastUtils.showLong(this,"删除成功！");
+        if (imageAdapter.uploadSelected())
+            ToastUtils.showLong(this, "删除成功！");
         else
-            ToastUtils.showLong(this,"删除失败！");
+            ToastUtils.showLong(this, "删除失败！");
         llDelete.setVisibility(View.GONE);
         navView.setVisibility(View.VISIBLE);
         imageAdapter.setInDeletionMode(false);

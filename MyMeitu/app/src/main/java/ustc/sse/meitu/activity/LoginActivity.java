@@ -21,6 +21,7 @@ import butterknife.ButterKnife;
 import ustc.sse.meitu.R;
 import ustc.sse.meitu.Service.UserService;
 import ustc.sse.meitu.pojo.MyApplicationContext;
+import ustc.sse.meitu.pojo.PicData;
 import ustc.sse.meitu.pojo.User;
 import ustc.sse.meitu.utils.ToastUtils;
 
@@ -49,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         myAppCtx = ((MyApplicationContext) this.getApplicationContext());
+        myAppCtx.setPicData(new PicData());
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
             @Override

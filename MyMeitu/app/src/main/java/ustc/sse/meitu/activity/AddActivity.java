@@ -90,7 +90,7 @@ public class AddActivity extends AppCompatActivity {
         mRect = ((MyApplicationContext) this.getApplicationContext()).getPicData();
 
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navView.getMenu().getItem(1).setChecked(true);
+        navView.getMenu().getItem(2).setChecked(true);
     }
 
     //检查权限
@@ -145,7 +145,10 @@ public class AddActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     Uri uri = intent.getData();
                     Bitmap bitmap = decodeUriAsBitmap(uri);
-                    setAndSaveBitmap(bitmap);
+                    bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth()/3, bitmap.getHeight()/3, true);
+                    mRect.setmBase(bitmap);
+                    Intent intent1 = new Intent(this, Main1Activity.class);
+                    startActivityForResult(intent1, CROP_REQUEST_CODE);
 //                    cropPhoto(uri);
                 }
                 break;
@@ -153,18 +156,6 @@ public class AddActivity extends AppCompatActivity {
                 Bitmap bitmap = mRect.getmBase();
                 setAndSaveBitmap(bitmap);
                 break;
-//            调用剪裁后返回
-//            case CROP_REQUEST_CODE:
-//                Bundle bundle = intent.getExtras();
-//                if (bundle != null) {
-//                    //剪裁后的Bitmap对象
-//                    Bitmap image = bundle.getParcelable("data");
-//                    setAndSaveBitmap(image);
-//
-//                    String path = saveImage(System.currentTimeMillis() + "", image);
-//                    stateText.setText("保存成功！");
-//                }
-//                break;
         }
     }
 
