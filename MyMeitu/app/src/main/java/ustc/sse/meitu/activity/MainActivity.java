@@ -76,6 +76,10 @@ public class MainActivity extends AppCompatActivity implements onItemClickListen
         switch (item.getItemId()) {
             case R.id.navigation_home:
                 return true;
+            case R.id.navigation_online:
+                intent = new Intent(MainActivity.this, OnlineActivity.class);
+                startActivity(intent);
+                return true;
             case R.id.navigation_dashboard:
                 intent = new Intent(MainActivity.this, AddActivity.class);
                 startActivity(intent);

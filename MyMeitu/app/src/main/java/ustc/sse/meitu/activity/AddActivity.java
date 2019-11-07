@@ -71,8 +71,6 @@ public class AddActivity extends AppCompatActivity {
             case R.id.navigation_dashboard:
                 return true;
             case R.id.navigation_notifications:
-                intent = new Intent(AddActivity.this, MeActivity.class);
-                startActivity(intent);
                 return true;
         }
         return false;

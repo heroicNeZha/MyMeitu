@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.sackcentury.shinebuttonlib.ShineButton;
 
 import java.util.ArrayList;
@@ -22,12 +26,18 @@ import java.util.Random;
 import ustc.sse.meitu.R;
 import ustc.sse.meitu.Service.ImageService;
 import ustc.sse.meitu.activity.ImageActivity;
+import ustc.sse.meitu.listener.BitmapCallbackListener;
+import ustc.sse.meitu.listener.ImageListCallbackListener;
 import ustc.sse.meitu.listener.onItemClickListener;
 import ustc.sse.meitu.pojo.Image;
 import ustc.sse.meitu.pojo.MyApplicationContext;
 import ustc.sse.meitu.utils.FileUtils;
+import ustc.sse.meitu.utils.HttpUtils;
+import ustc.sse.meitu.utils.ToastUtils;
 
-public class OnlineImageAdaper extends RecyclerView.Adapter<OnlineImageAdaper.ViewHolder> {
+public class OnlineImageAdapter extends RecyclerView.Adapter<OnlineImageAdapter.ViewHolder> {
+
+    private Context context;
 
     private MyApplicationContext myAppCtx;
     private ImageService imageService;
@@ -38,14 +48,18 @@ public class OnlineImageAdaper extends RecyclerView.Adapter<OnlineImageAdaper.Vi
     private onItemClickListener listener;
 
     private Random random;
+    private Gson gson;
+    private static final int COMPLETED = 1;
 
-    public OnlineImageAdaper(Context context) {
+    public OnlineImageAdapter(Context context) {
         super();
+        this.context = context;
         myAppCtx = ((MyApplicationContext) context.getApplicationContext());
         imageService = new ImageService();
         imageArrayList = new ArrayList<>();
         deleteArrayList = new ArrayList<>();
         random = new Random();
+        gson = new Gson();
     }
 
     public void setDeleteArrayList(ArrayList<Image> deleteArrayList) {
@@ -64,28 +78,72 @@ public class OnlineImageAdaper extends RecyclerView.Adapter<OnlineImageAdaper.Vi
         notifyDataSetChanged();
     }
 
-    public void replaceAll(ArrayList<Image> list) {
+    public void initImage() {
         imageArrayList.clear();
-        if (list != null && list.size() > 0) {
-            imageArrayList.addAll(list);
+        imageService.list(myAppCtx.getToken(), new ImageListCallbackListener() {
+            @Override
+            public void onSuccess(ArrayList<Image> imageList) {
+                for (Image image : imageList) {
+                    image.setText("图片" + image.getPath().substring(image.getPath().lastIndexOf("/"), image.getPath().lastIndexOf("/") + 13) + "说点什么吧..");
+                    imageArrayList.add(image);
+                }
+                Message msg = new Message();
+                msg.what = COMPLETED;
+                handler.sendMessage(msg);
+            }
+
+            @Override
+            public void onError(String exception) {
+                ToastUtils.showLong(context, exception);
+            }
+        });
+        notifyDataSetChanged();
+    }
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == COMPLETED) {
+                notifyDataSetChanged();
+            }
         }
+    };
+
+    public void refreshImage() {
         notifyDataSetChanged();
     }
 
     @Override
-    public OnlineImageAdaper.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        OnlineImageAdaper.ViewHolder viewHolder = new OnlineImageAdaper.ViewHolder(LayoutInflater
+    public OnlineImageAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        OnlineImageAdapter.ViewHolder viewHolder = new OnlineImageAdapter.ViewHolder(LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.item_local, parent, false));
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(OnlineImageAdaper.ViewHolder holder, int position) {
+    public void onBindViewHolder(OnlineImageAdapter.ViewHolder holder, int position) {
         Image image = imageArrayList.get(position);
+
+        if (image.getBitmap() == null) {
+            holder.tvDesc.setText("加载中");
+            imageService.get(image, new BitmapCallbackListener() {
+                @Override
+                public void onSuccess(Bitmap bitmap) {
+                    image.setBitmap(bitmap);Message msg = new Message();
+                    msg.what = COMPLETED;
+                    handler.sendMessage(msg);
+                }
+
+                @Override
+                public void onError(String exception) {
+                    ToastUtils.showLong(context, exception);
+                }
+            });
+        }
+
         holder.ivImage.setImageBitmap(image.getBitmap());
         holder.tvDesc.setText(image.getText());
-
         holder.tvLike.setText(String.valueOf(random.nextInt(100)));
         holder.btHeart.setOnClickListener(view -> {
             holder.tvLike.setText(String.valueOf(Integer.valueOf(holder.tvLike.getText().toString()) + 1));

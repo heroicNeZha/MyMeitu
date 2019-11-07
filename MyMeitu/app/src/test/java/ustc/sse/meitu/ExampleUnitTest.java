@@ -60,4 +60,16 @@ public class ExampleUnitTest {
         System.out.println(map.toString());
     }
 
+    @Test
+    public void testList() {
+        UserService userService = new UserService();
+        User user = new User();
+        user.setUsername("test");
+        user.setPassword("test");
+        String token = userService.Login(user).split(":", 2)[1];
+        ImageService imageService = new ImageService();
+        ArrayList<Image> array = imageService.list(token);
+        System.out.println(array.toString());
+    }
+
 }

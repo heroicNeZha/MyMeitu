@@ -1,17 +1,14 @@
 package ustc.sse.meitu.Service;
 
-import android.content.SharedPreferences;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.TreeMap;
 
 import ustc.sse.meitu.pojo.User;
-import ustc.sse.meitu.utils.HttpUtil;
+import ustc.sse.meitu.utils.HttpUtils;
 
 public class UserService {
 
@@ -34,7 +31,7 @@ public class UserService {
         data.put("password", user.getPassword());
         Gson gson = new Gson();
         String json = gson.toJson(data);
-        String responseJson = HttpUtil.post(HttpUtil.BASE_URL + "/api/user/", json);
+        String responseJson = HttpUtils.getInstance().post(HttpUtils.BASE_URL + "/api/user/", json);
         System.out.println(responseJson);
         Map<String, String> response = gson.fromJson(responseJson, mapType);
         if (response.size() == 3) {
@@ -51,7 +48,7 @@ public class UserService {
         data.put("password", user.getPassword());
         Gson gson = new Gson();
         String json = gson.toJson(data);
-        String responseJson = HttpUtil.post(HttpUtil.BASE_URL + "/api/user/", json);
+        String responseJson = HttpUtils.getInstance().post(HttpUtils.BASE_URL + "/api/user/", json);
         Map<String, String> response = gson.fromJson(responseJson, mapType);
         if (response.size() == 3) {
             return "success:" + response.get("token");
